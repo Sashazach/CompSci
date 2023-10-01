@@ -1,0 +1,68 @@
+#Author: Zach Bostock
+#Date Finished: 9/28/2023
+#Description: This is a mail price calculator that takes in a length, height, width, starting zipcode and ending zipcode and returns the cost to mail the item
+#Challenges: None
+
+#imports the OS module
+import os
+'''
+baseCosts is the shipping cost before distance is considered, list is parralel to costPerZone
+costPerZone is the amount of extra money it costs to ship a package type over a single zone
+classSpecs's values are the min length, max length, min height, max height, min width and max length for all envelope sizes (not package and large package)
+zipcodeZoneHolder gives the lower and upper bound of each zip zone
+'''
+baseCosts = [0.20, 0.37, 0.37, 0.60, 2.95, 3.95] 
+costPerZone = [0.03, 0.03, 0.04, 0.05, 0.25, 0.35]
+classSpecs = [3.5, 4.25, 3.5, 6, 0.007, 0.016, 4.25, 6, 6, 11.5, 0.007, 0.015, 3.5, 6.125, 5, 11.5, 0.016, 0.25, 6.125, 24, 11, 18, 0.25, 0.5]
+zipcodeZoneHolder = [0, 6999, 19999, 35999, 62999, 84999, 99999]
+
+"""
+determineZipZone gets the value of the upper limit of the highest zipcode and the upper limit of the zone below it.
+Once is has these values, the code compares these two values, first checking if it is less than or equal to the upper limit and then checking if it is higher than the lower limit.
+If the if statement is false, then the topPointerIndex is decreased by a value of 1. 
+The code then returns the index of the topPointerIndex if the if statement is true. 
+"""
+def determineZipZone(zipCode):
+    topPointerIndex = 6     
+    while True:
+        if(zipcodeZoneHolder[topPointerIndex - 1] <= zipCode and zipcodeZoneHolder[topPointerIndex] > zipCode):
+            return topPointerIndex
+        else:
+            topPointerIndex -= 1
+
+"""
+getDistancceInZones is passed the startingZip index and the ending zip index
+getDistanceInZones then returns the value of these integers minus eachother
+"""
+def getDistanceInZones(startingZip, endingZip):
+    return abs(determineZipZone(startingZip) - determineZipZone(endingZip))
+
+"""
+determineClass takes the length, height and width of a package 
+A double for loop is then used to iterate through the classSpecs list. 
+If the 3 parameters meet all the requirements of a given class, the index of that class is returned.
+"""
+def determineClass(length, height, width):
+    for currentClass in range(0, 4):
+        for i in range(0, 5):
+            if classSpecs[currentClass * 6 + i] < length <= classSpecs[currentClass * 6 + i + 1] and classSpecs[currentClass * 6 + i + 2] < height <= classSpecs[currentClass * 6 + i + 3] and classSpecs[currentClass * 6 + i + 4] < width <= classSpecs[currentClass * 6 + i + 5]: return currentClass
+            elif ((length + height + width) * 2.0) < 84 and currentClass >= 3:return currentClass + 1
+            elif ((length + height + width) * 2.0) < 130 and currentClass >= 3:return currentClass + 2
+            elif ((length + height + width) * 2.0) >= 130:return "UNMAILABLE"
+
+#indexes the base cost of the given class and adds it to the cost per zone of that mail class times the distance in zones
+def getShippingPrice(distance, mailClass):
+    if mailClass != None: 
+        if str(((baseCosts[mailClass] + costPerZone[mailClass] * distance)))[0] == "0":
+            return str(((baseCosts[mailClass] + costPerZone[mailClass] * distance)))[1:]
+        else: return ((baseCosts[mailClass] + costPerZone[mailClass] * distance))
+    else: return "UNMAILABLE"
+
+#Gets the user input and calls getDistanceInZones and determineClass as arguments to getShippingPrice
+def main():
+    for i in range(0, 6):
+        enteredInput = input("Please enter Length, Height, Width, StartingZip and EndingZip in that order seperated by commas:")
+        specs = enteredInput.split(",")
+        os.system('cls')
+        print(getShippingPrice(getDistanceInZones(int(specs[3]), int(specs[4])), determineClass(float(specs[0]), float(specs[1]), float(specs[2]))))
+    
