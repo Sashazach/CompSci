@@ -2,18 +2,19 @@
 #Date Finished: 9/28/2023
 #Description: This is a mail price calculator that takes in a length, height, width, starting zipcode and ending zipcode and returns the cost to mail the item
 #Challenges: None
-
 #imports the OS module
 import os
-'''
-baseCosts is the shipping cost before distance is considered, list is parralel to costPerZone
-costPerZone is the amount of extra money it costs to ship a package type over a single zone
-classSpecs's values are the min length, max length, min height, max height, min width and max length for all envelope sizes (not package and large package)
-zipcodeZoneHolder gives the lower and upper bound of each zip zone
-'''
+
+#baseCosts is the shipping cost before distance is considered, list is parralel to costPerZone
 baseCosts = [0.20, 0.37, 0.37, 0.60, 2.95, 3.95] 
+
+#costPerZone is the amount of extra money it costs to ship a package type over a single zone
 costPerZone = [0.03, 0.03, 0.04, 0.05, 0.25, 0.35]
+
+#classSpecs's values are the min length, max length, min height, max height, min width and max length for all envelope sizes (not package and large package)
 classSpecs = [3.5, 4.25, 3.5, 6, 0.007, 0.016, 4.25, 6, 6, 11.5, 0.007, 0.015, 3.5, 6.125, 5, 11.5, 0.016, 0.25, 6.125, 24, 11, 18, 0.25, 0.5]
+
+#zipcodeZoneHolder gives the lower and upper bound of each zip zone
 zipcodeZoneHolder = [0, 6999, 19999, 35999, 62999, 84999, 99999]
 
 """
@@ -23,6 +24,11 @@ If the if statement is false, then the topPointerIndex is decreased by a value o
 The code then returns the index of the topPointerIndex if the if statement is true. 
 """
 def determineZipZone(zipCode):
+    """
+    determineZipZone - this function...
+    zipCode - arg with valid zip
+    topPointerIndex -    returns zone of the zipcode arg
+    """
     topPointerIndex = 6     
     while True:
         if(zipcodeZoneHolder[topPointerIndex - 1] <= zipCode and zipcodeZoneHolder[topPointerIndex] > zipCode):
@@ -65,4 +71,5 @@ def main():
         specs = enteredInput.split(",")
         os.system('cls')
         print(getShippingPrice(getDistanceInZones(int(specs[3]), int(specs[4])), determineClass(float(specs[0]), float(specs[1]), float(specs[2]))))
-    
+        
+main()
