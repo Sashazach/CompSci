@@ -52,9 +52,9 @@ def determineClass(length, height, width):
     for currentClass in range(0, 4):
         for i in range(0, 5):
             if classSpecs[currentClass * 6 + i] < length <= classSpecs[currentClass * 6 + i + 1] and classSpecs[currentClass * 6 + i + 2] < height <= classSpecs[currentClass * 6 + i + 3] and classSpecs[currentClass * 6 + i + 4] < width <= classSpecs[currentClass * 6 + i + 5]: return currentClass
-            elif ((length + height + width) * 2.0) < 84 and currentClass >= 3:return currentClass + 1
-            elif ((length + height + width) * 2.0) < 130 and currentClass >= 3:return currentClass + 2
-            elif ((length + height + width) * 2.0) >= 130:return "UNMAILABLE"
+            elif (length + ((height + width) * 2.0)) < 84 and currentClass >= 3:return currentClass + 1
+            elif (length + ((height + width) * 2.0)) < 130 and currentClass >= 3:return currentClass + 2
+            elif (length + ((height + width) * 2.0)) >= 130:return "UNMAILABLE"
 
 #indexes the base cost of the given class and adds it to the cost per zone of that mail class times the distance in zones
 def getShippingPrice(distance, mailClass):
