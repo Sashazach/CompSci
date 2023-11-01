@@ -106,7 +106,10 @@
                 getShippingPrice computes the price of the shipment, deleting the leading zero if required
                 getShippingPrice returns the price of the shipment
                 */ 
-                
+                if (mail_class == "UNMAILABLE")
+                {
+                    return mail_class
+                }
                 if (String((base_costs[mail_class] + cost_per_zone[mail_class] * distance))[0] == "0")
                 {
                     return String(((base_costs[mail_class] + cost_per_zone[mail_class] * distance))).slice(1, 4);
