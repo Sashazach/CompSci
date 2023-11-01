@@ -47,80 +47,84 @@
         height - the height of the package as entered by the user
         width  - the width of the package as entered by the user
 
-        computes the class of the object
-        returns an integer less than or equal to 5 
-        */
-        {
-            for (let i = 0; i < 3; i++)
+            computes the class of the object
+            returns an integer less than or equal to 5 
+            */
             {
-                if (class_specs[i][0] < length && length <= class_specs[i][1] &&  class_specs[i][2] < height && height <= class_specs[i][3] && class_specs[i][4] < width && width <= class_specs[i][5])
+                for (let i = 0; i < 3; i++)
                 {
-                    return i;
-                } 
-            }
-            var length_around_edges = length + (2 * width) + (2 * height)
-
-            if (length_around_edges < 84) 
-                {
-                    return 4;
-                } 
-                else if (length_around_edges < 130)
-                {
-                    return 5;
-                } 
-                else if (length_around_edges >= 130)
-                {
-                    return "UNMAILABLE";
-                } 
-        }
-
-        function determineZipZone(zip_code)
-        {
-            /*
-            zipcode - a valid zipcode entered by the user
-
-            computes the zone that the zipCode argument falls into
-            returns zone of the zipcode arg
-            */ 
-            var top_pointer_index = 6
-            while (true) 
-            {
-                if (zipcode_zone_holder[top_pointer_index - 1] <= zip_code && zipcode_zone_holder[top_pointer_index] > zip_code) 
-                {
-                    return top_pointer_index;
-                } 
-                else 
-                {
-                    top_pointer_index -= 1;
+                    warn("35")
+                    if (class_specs[i][0] < length && length <= class_specs[i][1] &&  class_specs[i][2] < height && height <= class_specs[i][3] && class_specs[i][4] < width && width <= class_specs[i][5])
+                    {
+                        alert(i)
+                        return i;
+                    } 
                 }
+                alert((length + height + width) * 2)
+                if (((length + height + width) * 2.0) < 84) 
+                    {
+                        return 4;
+                    } 
+                    else if (((length + height + width) * 2.0) < 130)
+                    {
+                        return 5;
+                    } 
+                    else if (((length + height + width) * 2.0) >= 130)
+                    {
+                        return "UNMAILABLE";
+                    } 
             }
-        }
 
-        function getShippingPrice(distance, mail_class)
-        {
-            /* 
-            distance - the distance between the mailzones of the zipcodes entered by the user
-            mail_class- an index that is used to index the cost_per_zone and base_costs lists
-
-            getShippingPrice computes the price of the shipment, deleting the leading zero if required
-            getShippingPrice returns the price of the shipment
-            */ 
-            
-            if (String((base_costs[mail_class] + cost_per_zone[mail_class] * distance))[0] == "0")
-            {
-                return String(((base_costs[mail_class] + cost_per_zone[mail_class] * distance))).slice(1, 4);
-            }
-            else
-            {
-                return String((base_costs[mail_class] + (cost_per_zone[mail_class] * distance))).slice(0, 4);
-            }
-        }
-
-        function getDistanceInZones(starting_zip, ending_zip)
+            function determineZipZone(zipcode)
             {
                 /*
-                starting_zip - the starting zipcode as entered by the user
-                ending_zip - the ending zipcode as entered by the user
+                zipcode - a valid zipcode entered by the user
+
+                computes the zone that the zipCode argument falls into
+                returns zone of the zipcode arg
+                */ 
+                var top_pointer_index = 6
+                while (true) 
+                {
+                    alert("68")
+                    alert(zipcode)
+                    if (zipcode_zone_holder[top_pointer_index - 1] <= zipCode && zipcode_zone_holder[top_pointer_index] > zipCode) 
+                    {
+                        alert("Returning at 72")
+                        return top_pointer_index;
+                    } 
+                    else 
+                    {
+                        alert("below")
+                        top_pointer_index -= 1;
+                    }
+                }
+            }
+
+            function getShippingPrice(distance, mailClass)
+            {
+                /* 
+                distance - the distance between the mailzones of the zipcodes entered by the user
+                mailClass- an index that is used to index the cost_per_zone and base_costs lists
+
+                getShippingPrice computes the price of the shipment, deleting the leading zero if required
+                getShippingPrice returns the price of the shipment
+                */ 
+                if(mailClass != null)
+                {
+                    if (String((base_costs[mailClass] + cost_per_zone[mailClass] * distance))[0] == "0")
+                        return String(((base_costs[mailClass] + cost_per_zone[mailClass] * distance))).slice(1, 4);
+                }
+                    else return String((base_costs[mailClass] + (cost_per_zone[mailClass] * distance)).slice(0, 4));
+                return unmailable
+            }
+
+            function getDistanceInZones(starting_zip, ending_zip)
+                {
+                    alert("95")
+                    /*
+                    starting_zip - the starting zipcode as entered by the user
+                    ending_zip - the ending zipcode as entered by the user
 
                 getDistanceInZones computes the distance in zones between starting_zip and ending_zip
                 getDistanceInZones returns the distance in zones between starting_zip and ending_zip
@@ -128,21 +132,44 @@
                 return Math.abs(determineZipZone(starting_zip) - determineZipZone(ending_zip))
             }
 
-        function Main()
-        {
-            /*
-            gets data from the user and parses data points to floats or integers if required
-            */ 
-            var height = parseFloat(document.getElementById("Height").value);
-            var length = parseFloat(document.getElementById("Length").value);
-            var width = parseFloat(document.getElementById("Width").value);
-            var starting_zip = parseInt(document.getElementById("starting_zipcode").value);
-            var ending_zip = parseInt(document.getElementById("ending_zipcode").value);
-            var dinstance_in_zones = getDistanceInZones(starting_zip, ending_zip);
-            
-            var cost = (getShippingPrice(dinstance_in_zones, determineClass(length, height, width)))
-            document.getElementById("output_cost").innerHTML = cost;
-        }
-    </script>
-    
+            function Main()
+            {
+                var height = parseFloat(document.getElementById("Height").value);
+                var length = parseFloat(document.getElementById("Length").value);
+                var width = parseFloat(document.getElementById("Width").value);
+                var starting_zip = parseInt(document.getElementById("starting_zipcode").value);
+                var ending_zip = parseInt(document.getElementById("ending_zipcode").value);
+                alert("119")
+                alert(starting_zip)
+                alert(ending_zip)
+                var dinstanceinZones = getDistanceInZones(starting_zip, ending_zip);
+                
+                alert("113")
+                alert(getShippingPrice(dinstanceinZones, determineClass(length, height, width)))
+            }
+        </script>
+        <form>
+
+        Length 
+
+        <input id="Length" type="text" name="Length" size="12" maxlength="10">
+        <br><br> Height 
+
+        <input id="Height" type="text" name="Height" size="12" maxlength="10">
+        <br><br> Width 
+        
+        <input id="Width" type="text" name="Width" size="12" maxlength="10">
+        <br><br> Starting Zipcode
+
+        <input id="starting_zipcode" type="text" name="starting_zipcode" size="12" maxlength="10">
+        <br><br> Ending Zipcode
+
+        <input id="ending_zipcode" type="text" name="starting_zipcode" size="12" maxlength="10">
+        <br><br>
+
+        <button onclick="Main()" id="confirmDataEntries">Submit</button>
+        
+    </body>
+
+
 </html>
