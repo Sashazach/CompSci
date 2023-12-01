@@ -67,40 +67,15 @@ def boys_and_girls(file_in):
         "grade 12": 0
     }
     
-    
-    
     for record in file_in:
         kid = record.split(",")
-        print((kid[3]).lower())
-        print(kid)
-        gradeData[(kid[3]).lower()] = gradeData[(kid[3]).lower()] + 1
+        if (kid[3]).lower() != "current grade": 
+            gradeData[(kid[3]).lower()] += 1
     
-    print(gradeData)
-    """
-    print(f"Total Boys:{boys}, Total Girls:{girls}")
-
-    while True:
-        plotData = input("Would you like to plot this data? Y/N")
-        if plotData.upper() == "Y":
-                
-            data = {'girls':girls, 'boys':boys}
-            
-            figure = plt.figure(figsize = (2, 6))
-
-            genders = list(data.keys())
-            values = list(data.values())
-            
-            plt.bar(genders, values, color ='maroon', width = 0.4)
-            
-            plt.xlabel("Genders")
-            plt.ylabel("Number of Students")
-            
-            plt.show()
-        elif plotData.upper() == "N":
-            break
-        else:
-            print("Invalid input")
-    """
+    for key in gradeData:
+        print(key + ": " + str(gradeData[key]), end=" ")
+    
+    print("\n")
     
 def check_seniors(file_in):    
     file_in.seek(1)                                    
