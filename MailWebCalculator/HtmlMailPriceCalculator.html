@@ -42,14 +42,15 @@
 
             function determineClass(length, height, width)
             /*
-
             description  - used to get the index for base_costs and cost_per_zone that corresponds to the package type
-            length - the length of the pacakge as entered by the user
+
+            TAKES
+            length - the length of the package as entered by the user
             height - the height of the package as entered by the user
             width  - the width of the package as entered by the user
 
-            computes the class of the object
-            returns an integer less than or equal to 5 
+            computes - the class of the object
+            returns - an integer less than or equal to 5 
             */
             {
                 for (let i = 0; i < 3; i++)
@@ -75,13 +76,15 @@
                     } 
             }
 
-            function determineZipZone(zip_code)
+            function determine_zip_zone(zip_code)
             {
                 /*
+                TAKES
                 zipcode - a valid zipcode entered by the user
 
-                computes the zone that the zipCode argument falls into
-                returns zone of the zipcode arg
+                computes - the zone that the zipCode argument falls into
+                
+                returns - the zone of the zipcode argument
                 */ 
                 var top_pointer_index = 6
                 while (true) 
@@ -97,14 +100,15 @@
                 }
             }
 
-            function getShippingPrice(distance, mail_class)
+            function get_shipping_price(distance, mail_class)
             {
                 /* 
+                TAKES
                 distance - the distance between the mailzones of the zipcodes entered by the user
                 mail_class- an index that is used to index the cost_per_zone and base_costs lists
 
-                getShippingPrice computes the price of the shipment, deleting the leading zero if required
-                getShippingPrice returns the price of the shipment
+                computes - the price of the shipment, deleting the leading zero if required
+                returns - the price of the shipment
                 */ 
                 if (mail_class == "UNMAILABLE")
                 {
@@ -120,31 +124,32 @@
                 }
             }
 
-            function getDistanceInZones(starting_zip, ending_zip)
+            function get_distance_in_zones(starting_zip, ending_zip)
                 {
                     /*
+                    TAKES
                     starting_zip - the starting zipcode as entered by the user
                     ending_zip - the ending zipcode as entered by the user
 
-                    getDistanceInZones computes the distance in zones between starting_zip and ending_zip
-                    getDistanceInZones returns the distance in zones between starting_zip and ending_zip
+                    computes - the distance in zones between starting_zip and ending_zip
+                    returns - the distance in zones between starting_zip and ending_zip
                     */ 
-                    return Math.abs(determineZipZone(starting_zip) - determineZipZone(ending_zip))
+                    return Math.abs(determine_zip_zone(starting_zip) - determine_zip_zone(ending_zip))
                 }
 
             function Main()
             {
                 /*
-                gets data from the user and parses data points to floats or integers if required
+                Description - gets data from the user and parses data points to floats or integers if required
                 */ 
                 var height = parseFloat(document.getElementById("Height").value);
                 var length = parseFloat(document.getElementById("Length").value);
                 var width = parseFloat(document.getElementById("Width").value);
                 var starting_zip = parseInt(document.getElementById("starting_zipcode").value);
                 var ending_zip = parseInt(document.getElementById("ending_zipcode").value);
-                var dinstance_in_zones = getDistanceInZones(starting_zip, ending_zip);
+                var dinstance_in_zones = get_distance_in_zones(starting_zip, ending_zip);
                 
-                var cost = (getShippingPrice(dinstance_in_zones, determineClass(length, height, width)))
+                var cost = (get_shipping_price(dinstance_in_zones, determineClass(length, height, width)))
                 document.getElementById("output_cost").innerHTML = cost;
             }
         </script>
