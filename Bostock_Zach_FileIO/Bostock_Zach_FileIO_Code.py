@@ -96,7 +96,7 @@ def lookup_person(file_in):
                 elif new_file.lower() == "y":
                     while True:
                         file_name = input("Enter the name of the new file (Hint: end it with .csv):")
-                        lists_to_csv(file_name, kid)
+                        lists_to_csv(file_name, [kid])
                         break
                 else:
                     print("Invalid input, please re-enter.") 
@@ -109,12 +109,15 @@ def lookup_person(file_in):
 def lists_to_csv(file_path, data):
     headers = ["First Name", "Middle Name", "Last Name", "Grade", "Advisor Last", "Advisor First", "City", "State", "Zipcode"]
 
+    print(data)
     with open(file_path, 'w') as file:
         file.write(','.join(headers) + '\n')
-
+        
         for row in data:
-            csv_row = ','.join(map(str, row))
+            csv_row = ','.join(row)
+            
             file.write(csv_row + '\n')
+            
     print("Your new file has been sucessfully created!")
 
 def append_to_csv(file_path):
