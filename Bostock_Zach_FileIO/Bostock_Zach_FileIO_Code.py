@@ -114,6 +114,9 @@ def lists_to_csv(file_path, data):
         file.write(','.join(headers) + '\n')
         
         for row in data:
+            if row[4] == "None":
+                row.insert(5, "None")
+                
             csv_row = ','.join(row)
             
             file.write(csv_row + '\n')
@@ -173,7 +176,7 @@ def get_selections(index, selection, iterable):
             else:
                 kid = record
 
-            ## 1 is subtracted from the index for people without advisors because there is a comma included betweent he first and last advisor names, 
+            ## 1 is subtracted from the index for people without advisors because there is a comma included between the first and last advisor names, 
             ## which potentially skews aspects of the analysis if not handled 
             if index == 8:
                 if kid[4] == "None":
@@ -219,7 +222,7 @@ def get_user_selected_data(file_in):
     while True:
         print("1) Advisor Last Name")
         print("2) Town")
-        print("3) State")
+        print("3) State (Abreviation Required)")
         print("4) Zipcode")
 
 
