@@ -1,9 +1,7 @@
 import random
-
+from zString import zString
 
 vowel_counter = 0
-
-vowels = ['a', 'i', 'o', 'u', 'y']    
     
 nameInput = input("Please enter the name:")
 name = zString(nameInput)

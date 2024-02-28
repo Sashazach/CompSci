@@ -1,7 +1,10 @@
+import random
+
 class zString:
     def __init__(self, name):
         self.name = name
-    
+        self.vowels = ['a', 'i', 'o', 'u', 'y']    
+
     def check_hyphen(self):
       for i in range(len(self.name) - 1):
         if self.name[i] == "-":
@@ -48,12 +51,12 @@ class zString:
     def last_name(self):
         last_name = ""
         for i in range(len(self.name) - 1, -1, -1):
-            if name[i] != " ":
+            if self.name[i] != " ":
                 last_name += self.name[i]
             else:
                 return last_name[::-1]
 
     def count_vowels(self):
         for i in range(len(self.name) - 1):
-            if name[i].lower() in vowels:
+            if self.name[i].lower() in self.vowels:
                 vowel_counter += 1
