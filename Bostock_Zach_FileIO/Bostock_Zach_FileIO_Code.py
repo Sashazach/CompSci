@@ -117,7 +117,7 @@ def lists_to_csv(file_path, data):
             if row[4] == "None":
                 row.insert(5, "None")
                 
-            csv_row = ','.join(row)
+            csv_row = ','.join(row).replace('"', '').replace(", ", ',')
             
             file.write(csv_row + '\n')
             
