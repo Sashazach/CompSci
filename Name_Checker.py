@@ -11,13 +11,37 @@ def name_to_word(name1):
     old_letter = ""
     
     for i in range(len(name1) - 1):
-        new_position = random.randint(0, len(name1))
-        old_letter = name1[new_position]
-        letter = name[i]
-        name[i] = letter
-        ##name1[new_position] = name[i]
-        name1[i] = old_letter
-    return name1
+        scrambled_name = []
+        scrambled_name.append(name[random.randint(0, len(name)-1)]) 
+        
+    return ''.join(scrambled_name[0:])
+
+def zach_upper(string):
+    
+    upper_string = ""
+    
+    for char in string:
+        if 122 >= ord(char) >= 97:
+            upper_string += chr(ord(char) - 32)
+        else:
+            upper_string += char
+    return upper_string
+
+def zach_lower(string):
+    
+    lower_string = ""
+    
+    for char in string:
+        if 90 >= ord(char) >= 65:
+            lower_string += chr(ord(char) + 32)
+        else:
+            lower_string += char
+            lower_string = lower_string + char
+    return lower_string
+
+elephant = input("TEST:")
+print(zach_lower(elephant))
+print(zach_upper(elephant))
 
 def get_first_name():
     first_name = ""
@@ -54,4 +78,4 @@ print(f"Hyphen: {check_hyphens()}")
 print(get_first_name())
 print(get_last_name())
 
-print(name_to_word(name))
+print(f"Scrambled word: {name_to_word(name)}")
