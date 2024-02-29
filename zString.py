@@ -5,10 +5,13 @@ class zString:
         self.name = name
         self.vowels = ['a', 'i', 'o', 'u', 'y']    
 
+    def reverse_name(self):
+        return self.name[::-1]
+
     def check_hyphen(self):
-      for i in range(len(self.name) - 1):
-        if self.name[i] == "-":
-            return True
+        for i in range(len(self.name) - 1):
+            if self.name[i] == "-":
+                return True
         return False
       
     def zach_upper(self):
@@ -48,6 +51,17 @@ class zString:
             else:
                 return first_name
 
+    def middle_name(self):
+        middle_name = ""
+
+        if self.first_name() != "" and self.last_name() != "":
+            for i in range(len(self.name) - 1):
+                if self.name[i] == " ":
+                    for j in range(i + 1, len(self.name) - 1):
+                        if self.name[j] != " ":
+                            middle_name += self.name[j]
+                return middle_name
+        
     def last_name(self):
         last_name = ""
         for i in range(len(self.name) - 1, -1, -1):
@@ -55,6 +69,8 @@ class zString:
                 last_name += self.name[i]
             else:
                 return last_name[::-1]
+    
+
 
     def count_vowels(self):
         for i in range(len(self.name) - 1):
