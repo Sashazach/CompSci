@@ -2,20 +2,44 @@ import random
 
 class zString:
 
+    """
+    Description - A function to handle   init  .
+    Takes - self, name - Provide the necessary input(s).
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def __init__(self, name):
         self.name = name
 
+    """
+    Description - A function to handle reverse name.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def reverse_name(self):
         self = zString(self.name[::-1])
         return self
     
 
+    """
+    Description - A function to handle check hyphen.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def check_hyphen(self):
         for i in range(len(self.name) - 1):
             if self.name[i] == "-":
                 return True
         return False
     
+    """
+    Description - A function to handle Zstripped.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def Zstripped(self):
         stripped_String = ""
         
@@ -25,6 +49,12 @@ class zString:
 
         return stripped_String
       
+    """
+    Description - A function to handle zach upper.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def zach_upper(self):
         upper_string = ""
         
@@ -37,6 +67,12 @@ class zString:
         self = zString(upper_string)
         return self
 
+    """
+    Description - A function to handle zach lower.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def zach_lower(self):
         lower_string = ""
         
@@ -49,12 +85,24 @@ class zString:
         self = zString(lower_string)
         return self
     
+    """
+    Description - A function to handle name to word.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def name_to_word(self):
         scrambled_word = ""
         name_list = list(self.Zstripped())
         for i in range(len(self.Zstripped())): scrambled_word += name_list.pop(random.randint(0, len(name_list)-1)) 
         return scrambled_word
         
+    """
+    Description - A function to handle last name.
+    Takes - self, index=None - Provide the necessary input(s).
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def last_name(self, index=None):
         last_name = ""
         for i in range(len(self.name) - 1, -1, -1):
@@ -65,30 +113,37 @@ class zString:
                     return last_name[::-1]
                 return i + 1
     
-    def first_name(self, index=None):
+    """
+    Description - A function to handle first name.
+    Takes - self, index=None - Provide the necessary input(s).
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
+    def first_name(self, index = None):
         first_name = ""
-        found_space = False
-        for i in range(len(self.name)):
-            # Check if the current character is not a space
-            if not found_space:
-                if self.name[i] != " ":
-                    first_name += self.name[i]
-                else:
-                    found_space = True
-                    if index is None:
-                        break  # Exit the loop if a space is found and index is None
-                    else:
-                        return i + 1  # Return the position of the first space
+        for i in range(len(self.name) - 1):
+            if self.name[i] != " ":
+                first_name += self.name[i]
             else:
-                if index is not None:
-                    return i  # Return the position after the first name if index is requested
-
-            # Return a zString object of the first name, handling cases with no spaces
-            return zString(first_name) if first_name else self
+                if index == None:
+                    return first_name
+                return i + 1
             
+    """
+    Description - A function to handle palindrome.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def palindrome(self):
         return self.reverse_name().zach_lower().name == self.zach_lower().name
         
+    """
+    Description - A function to handle middle name.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def middle_name(self):
         first_name_end = self.first_name(index="Index")
         last_name_start = self.last_name(index="Index")
@@ -96,23 +151,42 @@ class zString:
 
         try:
             if len(self.Zstripped()) > (len(self.first_name() + self.last_name())):
-                return self.name[first_name_end:last_name_start]
+                self = zString(self.name[first_name_end:last_name_start])
+                return self.name
             return "Middle Name Not Found"
         except:
             return "Last Name Not Found"
 
+    """
+    Description - A function to handle count vowels.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def count_vowels(self):
         vowels = ['a', 'i', 'e', 'o', 'u', 'y']    
         vowel_counter = 0
         for i in range(len(self.name) - 1):
-            if self.name[i].lower() in self.vowels:
+            if self.name[i].lower() in vowels:
                 vowel_counter += 1
         return vowel_counter
     
+    """
+    Description - A function to handle has title.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def has_title(self):
         titles = ["Dr.", "Sir", "Esq", "Ph.d"]
-        return self.first_name().Zstripped() in titles
+        return self.first_name() in titles
 
+    """
+    Description - A function to handle consonant frequency.
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     def consonant_frequency(self):
         frequency_tracker = {}
         vowels = ['a', 'e', 'i', 'o', 'u', 'y']  # Added 'e' to vowels list
