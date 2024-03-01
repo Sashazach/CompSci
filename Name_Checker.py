@@ -1,4 +1,4 @@
-##from zString import zString
+from zString import zString
 import random
 class zString:
     def __init__(self, name):
@@ -44,36 +44,39 @@ class zString:
         return lower_string
     
     def name_to_word(self):
-        old_letter = ""
+        scrambled_word = ""
+        name_list = list(self.Zstripped())
+        for i in range(len(self.Zstripped())): scrambled_word += name_list.pop() 
+        return scrambled_word
         
-        for i in range(len(self.name) - 1):
-            scrambled_name = []
-            scrambled_name.append(self.name[random.randint(0, len(self.name)-1)]) 
-            
-        return ''.join(scrambled_name[0:])
-    
-    def last_name(self):
+    def last_name(self, index=None):
         last_name = ""
         for i in range(len(self.name) - 1, -1, -1):
             if self.name[i] != " ":
                 last_name += self.name[i]
             else:
-                return last_name[::-1], i + 1
+                if index == None:
+                    return last_name[::-1]
+                return i + 1
     
-    def first_name(self):
+    def first_name(self, index = None):
         first_name = ""
         for i in range(len(self.name) - 1):
             if self.name[i] != " ":
                 first_name += self.name[i]
             else:
-                return first_name, i + 1
+                if index == None:
+                    return first_name
+                return i + 1
+            
 
     def middle_name(self):
-        _, first_name_end = self.first_name()
-        _, last_name_start = self.last_name()
+        first_name_end = self.first_name(index="Index")
+        last_name_start = self.last_name(index="Index")
         middle_name = ""
-        if len(self.Zstripped()) > len(self.first_name() + self.last_name()):
+        if len(self.Zstripped()) > (len(self.first_name() + self.last_name())):
             return self.name[first_name_end:last_name_start]
+        return "Last Name Not Found"
 
     def count_vowels(self):
         for i in range(len(self.name) - 1):
@@ -88,8 +91,8 @@ print(name.zach_lower())
 print(name.first_name())
 print(name.last_name())
 print(name.middle_name())
-print(name.test_middle_name())
 print(name.Zstripped())
+print(name.name_to_word())
 
 def main():
     print("Please select the check you wish to run...")
