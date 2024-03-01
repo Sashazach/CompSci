@@ -1,6 +1,21 @@
 from zString import zString
 
+## Author - Zachry Bostock
+## Date Completed - 12/16/23
+## Implemented Project Componenets (as listed on course website) - 1, 2, 3, 4, 5, 6, 7, 8, 9a, 10a, 10
+## Bugs - N/A
+## Challenges - N/A
+
+
+
 def main():
+
+    """
+    Description - A function to take user input
+    Takes - None
+    Does - Performs the operation.
+    Returns - Describe the return value.
+    """
     nameInput = input("Please enter the name:")
     name = zString(nameInput)
 

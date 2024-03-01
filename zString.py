@@ -1,10 +1,13 @@
 import random
 
+
+
+
 class zString:
 
     """
     Description - A function to handle   init  .
-    Takes - self, name - Provide the necessary input(s).
+    Takes - self, name
     Does - Performs the operation.
     Returns - Describe the return value.
     """
@@ -14,8 +17,8 @@ class zString:
     """
     Description - A function to handle reverse name.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - reverses the name
+    Returns - returns the reversed name
     """
     def reverse_name(self):
         self = zString(self.name[::-1])
@@ -25,8 +28,8 @@ class zString:
     """
     Description - A function to handle check hyphen.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - checks for hyphens
+    Returns - returns a boolean depending on if a hyphen was found
     """
     def check_hyphen(self):
         for i in range(len(self.name) - 1):
@@ -37,8 +40,8 @@ class zString:
     """
     Description - A function to handle Zstripped.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - strips leading whitespace from the string
+    Returns - returns the stripped string
     """
     def Zstripped(self):
         stripped_String = ""
@@ -52,8 +55,8 @@ class zString:
     """
     Description - A function to handle zach upper.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - Makes the string uppercase
+    Returns - returns an uppercase version of the string
     """
     def zach_upper(self):
         upper_string = ""
@@ -70,8 +73,8 @@ class zString:
     """
     Description - A function to handle zach lower.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - Makes the string lowercase
+    Returns - returns a lowercase version of the string
     """
     def zach_lower(self):
         lower_string = ""
@@ -88,8 +91,8 @@ class zString:
     """
     Description - A function to handle name to word.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - scrambles letters of name into one word
+    Returns - returns the scrambled word
     """
     def name_to_word(self):
         scrambled_word = ""
@@ -99,9 +102,9 @@ class zString:
         
     """
     Description - A function to handle last name.
-    Takes - self, index=None - Provide the necessary input(s).
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Takes - self, index=None 
+    Does - gets the last name (the last word in the string)
+    Returns - returns the last name
     """
     def last_name(self, index=None):
         last_name = ""
@@ -115,9 +118,9 @@ class zString:
     
     """
     Description - A function to handle first name.
-    Takes - self, index=None - Provide the necessary input(s).
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Takes - self, index=None
+    Does - Get the first name (first name of string)
+    Returns - returns the first name
     """
     def first_name(self, index = None):
         first_name = ""
@@ -132,8 +135,8 @@ class zString:
     """
     Description - A function to handle palindrome.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - checks if the string is a paildrome
+    Returns - returns boolean depending on whether or not string is a palindrome
     """
     def palindrome(self):
         return self.reverse_name().zach_lower().name == self.zach_lower().name
@@ -141,8 +144,8 @@ class zString:
     """
     Description - A function to handle middle name.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - checks and gets middle name (the middle words of the string)
+    Returns - returns the middle name
     """
     def middle_name(self):
         first_name_end = self.first_name(index="Index")
@@ -160,8 +163,8 @@ class zString:
     """
     Description - A function to handle count vowels.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - counts vowels in the string
+    Returns - returns the number of vowels in the string
     """
     def count_vowels(self):
         vowels = ['a', 'i', 'e', 'o', 'u', 'y']    
@@ -174,8 +177,8 @@ class zString:
     """
     Description - A function to handle has title.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - checks if the string/name has a title
+    Returns - returns boolean depending on whether string/name has a title
     """
     def has_title(self):
         titles = ["Dr.", "Sir", "Esq", "Ph.d"]
@@ -184,8 +187,8 @@ class zString:
     """
     Description - A function to handle consonant frequency.
     Takes - None
-    Does - Performs the operation.
-    Returns - Describe the return value.
+    Does - counts consonants of the string do determine frequency
+    Returns - returns dictionary containing constant frequency data
     """
     def consonant_frequency(self):
         frequency_tracker = {}
