@@ -2,11 +2,8 @@ from What_In_Name.zString import zString
 
 ## Author - Zachry Bostock
 ## Date Completed - 2/29/2024
-## Implemented Project Componenets (as listed on course website) - range(0, 12) + 15
+## Implemented Project Components (as listed on the course website) - range(0, 12) + 15
 ## Bugs - N/A
-## Challenges - N/A
-
-
 
 def main():
     """
