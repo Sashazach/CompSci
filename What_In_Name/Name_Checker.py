@@ -1,4 +1,4 @@
-from zString import zString
+from What_In_Name.zString import zString
 
 ## Author - Zachry Bostock
 ## Date Completed - 2/29/2024
