@@ -1,9 +1,9 @@
 import random
 import copy
 import os
+import time
 
 def check_game_status(grid):
-    found_occupied = False
     for i in range(8):
         for j in range(8):
             if grid[i][j] == 1:
@@ -28,17 +28,37 @@ def start_game_loop(game_mode):
         ##generate AI grid
         backend_ai_grid = auto_place_ships(initiate_empty_grid())
     while True: 
-        backend_ai_grid = player_turn(backend_ai_grid)
+        time.sleep(2)
+        player_grid, backend_ai_grid = ai_turn(backend_ai_grid,  player_grid)
         
         if check_game_status(backend_ai_grid) == "Over":
             print("Game Over!")
             break
-
-def ai_turn(backend_ai_grid):
-    while True:
         
+        backend_ai_grid = player_turn(backend_ai_grid, player_grid)
+        
+        if check_game_status(backend_ai_grid) == "Over":
+            print("Game Over!")
+            break
+        
+def ai_turn(backend_ai_grid, player_grid):
+    while True:
+        coll = random.randint(0, 7)
+        row = random.randint(0, 7)
 
-def player_turn(backend_ai_grid):
+        if backend_ai_grid[coll][row] != "M" and player_grid[coll][row] != "D":
+            if player_grid[coll][row] == "S":
+                player_grid[coll][row] = "X"
+                print("One of your ships has been hit!\n")
+                break
+            else:
+                player_grid[coll][row] = "M"
+                print("The computer missed!")
+                backend_ai_grid[coll][row] = "M"
+                break
+    return player_grid, backend_ai_grid
+
+def player_turn(backend_ai_grid, playergrid):
     row = int(input("Enter collumn you would like to attack (Horizontal):"))
     coll = int(input("Enter row you would like to attack (Vertical):"))
         
@@ -60,8 +80,12 @@ def player_turn(backend_ai_grid):
             else:
                 frontend_ai_grid[i][j] = "#"
                     
+    print("Enemy Grid\n")
     print('\n'.join(['   '.join([str(cell) for cell in row]) for row in frontend_ai_grid]))
-        
+    
+    print("\nYour Grid\n")
+    print(print('\n'.join(['   '.join([str(cell) for cell in row]) for row in playergrid]))
+)
     frontend_ai_grid.clear()
     
     return backend_ai_grid
@@ -89,9 +113,10 @@ def manual_place_ships(grid):
         coll = int(input("Enter Collumn (Horizontal):"))
         row = int(input("Enter Row (Vertical):"))
         
-        if coll != None and 0 <= coll < 8 and 0 <= row < 8:
+        if coll != None and 0 <= coll <= 8 and 0 <= row <= 8:
             grid[row - 1][coll - 1] = "S"
-            
+            os.system('cls')
+        
     return grid
 
 
