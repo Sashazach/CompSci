@@ -50,6 +50,7 @@ def ai_turn(backend_ai_grid, player_grid):
             if player_grid[coll][row] == "S":
                 player_grid[coll][row] = "X"
                 print("One of your ships has been hit!\n")
+                ##print('\n'.join(['   '.join([str(cell) for cell in row]) for row in player_grid]))
                 break
             else:
                 player_grid[coll][row] = "M"
@@ -59,16 +60,14 @@ def ai_turn(backend_ai_grid, player_grid):
     return player_grid, backend_ai_grid
 
 def player_turn(backend_ai_grid, playergrid):
-    row = int(input("Enter collumn you would like to attack (Horizontal):"))
-    coll = int(input("Enter row you would like to attack (Vertical):"))
+    row, coll = get_input()
         
-    if 0 <= coll < 8 and 0 <= row < 8:
-        hit = check_hit(backend_ai_grid, row - 1, coll - 1)
-        print(hit)
-        if hit == "Hit!":
-            backend_ai_grid[coll - 1][row - 1] = "D"
-        else:
-            backend_ai_grid[coll - 1][row - 1] = 2
+    hit = check_hit(backend_ai_grid, row, coll)
+    print(hit)
+    if hit == "Hit!":
+        backend_ai_grid[coll][row] = "D"
+    else:
+        backend_ai_grid[coll][row] = 2
 
     frontend_ai_grid = copy.deepcopy(backend_ai_grid)
     for i in range(8):
@@ -110,15 +109,27 @@ def manual_place_ships(grid):
     for i in range(1, 6):
         print('\n'.join(['   '.join([str(cell) for cell in row]) for row in grid]))
         print(f"\nEnter where would you like to place your ship ({i}/5):")
-        coll = int(input("Enter Collumn (Horizontal):"))
-        row = int(input("Enter Row (Vertical):"))
+                
+        row, coll = get_input()
         
-        if coll != None and 0 <= coll <= 8 and 0 <= row <= 8:
-            grid[row - 1][coll - 1] = "S"
-            os.system('cls')
-        
+        grid[row][coll] = "S"
+
     return grid
 
+def get_input():
+    while True:
+        adress = input("Enter Collumn and Row (Horizontal, Vertical):")
+            
+        try:
+            coll, row = [int(integer) for integer in adress.split(",")]
+            if coll != None and 0 <= coll <= 8 and 0 <= row <= 8:
+                return row - 1, coll - 1
+            else: 
+                raise()
+        except:
+            os.system('cls')
+            print("\nInput error, try again...\n")
+    
 
 def initiate_empty_grid():
     grid = []
