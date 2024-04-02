@@ -1,6 +1,10 @@
 from pathlib import Path
 import requests as r
+<<<<<<< HEAD
 from time import sleep
+=======
+import time
+>>>>>>> 450e001310b2b3eba07d4a4885e58ed4b6cafce5
 
 def validate_words(word_list):
     for i in range(len(word_list)):
@@ -10,10 +14,15 @@ def validate_words(word_list):
         while True:
             try:
                 req = r.get(url, timeout=2)
+                print("14")
             except:
+<<<<<<< HEAD
                 print("Retrying...")
                 pass
 
+=======
+                print("Retrying")
+>>>>>>> 450e001310b2b3eba07d4a4885e58ed4b6cafce5
             break
         
         is_word = not ("Words fail us" in req.content.decode() or "The word you've entered isn't in the dictionary" in req.content.decode())
