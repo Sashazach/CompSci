@@ -2,8 +2,6 @@ from pathlib import Path
 import requests as r
 import time
 
-
-
 def validate_words(word_list):
     
     for i in range(len(word_list)):
@@ -13,8 +11,9 @@ def validate_words(word_list):
         while True:
             try:
                 req = r.get(url, timeout=2)
+                print("14")
             except:
-                pass
+                print("Retrying")
             break
         
         is_word = not ("Words fail us" in req.content.decode() or "The word you've entered isn't in the dictionary" in req.content.decode())
