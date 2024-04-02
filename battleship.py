@@ -20,17 +20,18 @@ def start_game_loop(game_mode):
     ##make Player Grid
     player_grid = manual_place_ships(initiate_empty_grid())
     os.system('cls')
-    print("Grid Created! Here it is...")
+    print("Your grid has been created! Here it is...")
     
     print('\n'.join(['   '.join([str(cell) for cell in row]) for row in player_grid]))
+    
+    os.system('cls')
 
     if game_mode == "1":
         ##generate AI grid
         backend_ai_grid = auto_place_ships(initiate_empty_grid())
     while True: 
-        time.sleep(2)
         player_grid, backend_ai_grid = ai_turn(backend_ai_grid,  player_grid)
-        
+
         if check_game_status(backend_ai_grid) == "Over":
             print("Game Over!")
             break
@@ -49,42 +50,42 @@ def ai_turn(backend_ai_grid, player_grid):
         if backend_ai_grid[coll][row] != "M" and player_grid[coll][row] != "D":
             if player_grid[coll][row] == "S":
                 player_grid[coll][row] = "X"
+                os.system('cls')
                 print("One of your ships has been hit!\n")
-                ##print('\n'.join(['   '.join([str(cell) for cell in row]) for row in player_grid]))
+
                 break
             else:
                 player_grid[coll][row] = "M"
-                print("The computer missed!")
+                print("Computer:Miss!\n")
                 backend_ai_grid[coll][row] = "M"
                 break
     return player_grid, backend_ai_grid
 
-def player_turn(backend_ai_grid, playergrid):
-    row, coll = get_input()
-        
-    hit = check_hit(backend_ai_grid, row, coll)
-    print(hit)
-    if hit == "Hit!":
-        backend_ai_grid[coll][row] = "D"
-    else:
-        backend_ai_grid[coll][row] = 2
+def player_turn(backend_ai_grid, playergrid):        
+
+    convert_symbols = {2:"M", "D":"H", 1:"#", "#":"#", "M":"#", "X":"X"}
 
     frontend_ai_grid = copy.deepcopy(backend_ai_grid)
     for i in range(8):
         for j in range(8):
-            if frontend_ai_grid[i][j] == 2:
-                frontend_ai_grid[i][j] = "M"
-            elif frontend_ai_grid[i][j] == "D":
-                frontend_ai_grid[i][j] = "H"
-            else:
-                frontend_ai_grid[i][j] = "#"
+            frontend_ai_grid[i][j] = convert_symbols[backend_ai_grid[i][j]]
                     
     print("Enemy Grid\n")
     print('\n'.join(['   '.join([str(cell) for cell in row]) for row in frontend_ai_grid]))
     
     print("\nYour Grid\n")
-    print(print('\n'.join(['   '.join([str(cell) for cell in row]) for row in playergrid]))
-)
+    print('\n'.join(['   '.join([str(cell) for cell in row]) for row in playergrid]))
+
+    row, coll = get_input()
+    os.system('cls')
+
+    hit = check_hit(backend_ai_grid, row, coll)
+    print(f"You:{hit}")
+    if hit == "Hit!":
+        backend_ai_grid[coll][row] = "D"
+    else:
+        backend_ai_grid[coll][row] = 2
+
     frontend_ai_grid.clear()
     
     return backend_ai_grid
