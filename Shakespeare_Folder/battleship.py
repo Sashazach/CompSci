@@ -1,5 +1,6 @@
 import random
 import copy
+import os
 
 def check_game_status(grid):
     found_occupied = False
@@ -18,10 +19,11 @@ def check_hit(grid, row, coll):
 def start_game_loop(game_mode):
     ##make Player Grid
     player_grid = manual_place_ships(initiate_empty_grid())
+    os.system('cls')
+    print("Grid Created! Here it is...")
     
     print('\n'.join(['   '.join([str(cell) for cell in row]) for row in player_grid]))
 
-    
     if game_mode == "1":
         ##generate AI grid
         backend_ai_grid = auto_place_ships(initiate_empty_grid())
@@ -33,7 +35,8 @@ def start_game_loop(game_mode):
             break
 
 def ai_turn(backend_ai_grid):
-    pass
+    while True:
+        
 
 def player_turn(backend_ai_grid):
     row = int(input("Enter collumn you would like to attack (Horizontal):"))
@@ -80,14 +83,14 @@ def auto_place_ships(grid):
     return grid
 
 def manual_place_ships(grid):
-    print('\n'.join(['   '.join([str(cell) for cell in row]) for row in grid]))
     for i in range(1, 6):
+        print('\n'.join(['   '.join([str(cell) for cell in row]) for row in grid]))
         print(f"\nEnter where would you like to place your ship ({i}/5):")
         coll = int(input("Enter Collumn (Horizontal):"))
         row = int(input("Enter Row (Vertical):"))
         
-        if 0 <= coll < 8 and 0 <= row < 8:
-            grid[coll][row] = "S"
+        if coll != None and 0 <= coll < 8 and 0 <= row < 8:
+            grid[row - 1][coll - 1] = "S"
             
     return grid
 
@@ -97,7 +100,7 @@ def initiate_empty_grid():
     for i in range(8):
         grid.append([])
         for j in range(8):
-            grid[i].append(0)
+            grid[i].append("#")
             
     return grid
     
