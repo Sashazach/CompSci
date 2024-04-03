@@ -11,7 +11,7 @@ def check_game_status(grid):
     return "Over"
 
 def check_hit(grid, row, coll):
-    if grid[coll][row] == 1:
+    if grid[row][coll] == 1:
         return "Hit!"
     else:
         return "Miss!"
@@ -64,6 +64,7 @@ def ai_turn(backend_ai_grid, player_grid):
 def player_turn(backend_ai_grid, playergrid):        
 
     convert_symbols = {2:"M", "D":"H", 1:"#", "#":"#", "M":"#", "X":"X"}
+    print('\n'.join(['   '.join([str(cell) for cell in row]) for row in backend_ai_grid]))
 
     frontend_ai_grid = copy.deepcopy(backend_ai_grid)
     for i in range(8):
@@ -82,9 +83,9 @@ def player_turn(backend_ai_grid, playergrid):
     hit = check_hit(backend_ai_grid, row, coll)
     print(f"You:{hit}")
     if hit == "Hit!":
-        backend_ai_grid[coll][row] = "D"
+        backend_ai_grid[row][coll] = "D"
     else:
-        backend_ai_grid[coll][row] = 2
+        backend_ai_grid[row][coll] = 2
 
     frontend_ai_grid.clear()
     
@@ -100,7 +101,7 @@ def main():
     start_game_loop(choice)
     
 def auto_place_ships(grid):
-    for i in range(4):
+    for i in range(5):
         coll = random.randint(0, len(grid) - 1)
         row = random.randint(0, len(grid) - 1) ## grid is 8x8
         grid[coll][row] = 1 # true = occupied
