@@ -2,6 +2,8 @@ import random
 import copy
 import os
 import time
+from rich.console import Console
+from rich.table import Table
 
 def main():
     print("What mode would you like?")
@@ -40,29 +42,63 @@ def get_input():
             print("\nInput error, try again...\n")
 
 def mark_tile(coords, grid, marking):
-    markings = {'sea':'#', 'ship':'\b◽' }
+    markings = {'sea':'#', 'ship':'█'}  # Use the Full Block character for ships
     
-    grid[0][1] = markings[marking]
+    grid[coords[0]][coords[1]] = markings[marking]
+
+    return grid
+
+def format_table(grid):
+    formatted_rows = []
+
+    for row in grid:
+        
+        formatted_row = '   '.join([str(cell) for cell in row])
+        formatted_rows.append(formatted_row)
+
+   
+    new_formatted_rows = []
+    for row in grid:
+        new_row = ""
+        i = 0
+        while i < len(row):
+            new_row += row[i]
+            
+            if i < len(row) -1 and row[i] == '█' and row[i + 1] == '█':
+                new_row += '███████'  
+                i += 1  
+            else:
+                new_row += '   '
+            i += 1
+        new_formatted_rows.append(new_row)
+    
+    formatted_grid = '\n'.join(new_formatted_rows)
+
+    return formatted_grid
 
 def place_ships_manually(grid):
-    ships = {'aircraft carrier':5, 'destroyer':3, 'submarine':2}
+    ships = {'aircraft carrier':5, 'destroyer':3, 'submarine':2, 'patrol boat':1}
     
     print("Admiral! Position your ships for battle!\n")
     print("(Hint: Use the arrow keys to move ship and R to rotate.\nPress enter to confirm ship placement!)")
-    for i in range(1, 6):
+    for i in range(1, len(ships)):
         print("Admiral, here is a map of the sea!\n")
-        print('\n'.join(['   '.join([str(cell) for cell in row]) for row in grid]))
         print(f"Position your aircraft carrier! ({i}/5)")
         
         rotation = 0
         tiles = []
         for ship, length in ships.items():
-            for i in range(2, length):
-                mark_tile((4,i), grid, 'ship')
-            print('\n'.join(['   '.join([str(cell) for cell in row]) for row in grid]))
+            for i in range(2, length + 2):
+                grid = mark_tile((4,i), grid, 'ship')
+            
+            grid = format_table(grid)
+            print(grid)
+            ##print('\n'.join(['   '.join([str(cell) for cell in row]) for row in grid]))
             
             while True:
                 move = input()
                 time.sleep(0.2)
-            
-place_ships_manually(initiate_empty_grid())
+
+empty_grid = initiate_empty_grid()
+place_ships_manually(empty_grid)
+
