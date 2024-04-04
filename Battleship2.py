@@ -44,7 +44,7 @@ def get_input():
 def mark_tile(coords, grid, marking):
     markings = {'sea':'#', 'ship':'█'}  # Use the Full Block character for ships
     
-    grid[coords[0]][coords[1]] = markings[marking]
+    grid[coords[1]][coords[0]] = markings[marking]
 
     return grid
 
@@ -65,10 +65,12 @@ def format_table(grid):
             new_row += row[i]
             
             if i < len(row) -1 and row[i] == '█' and row[i + 1] == '█':
-                new_row += '███████'  
+                new_row += '███████████'  
                 i += 1  
+            elif row[i] == '█':
+                new_row += '\b\b███    '
             else:
-                new_row += '   '
+                new_row += '     '
             i += 1
         new_formatted_rows.append(new_row)
     
@@ -85,19 +87,42 @@ def place_ships_manually(grid):
         print("Admiral, here is a map of the sea!\n")
         print(f"Position your aircraft carrier! ({i}/5)")
         
-        rotation = 0
-        tiles = []
         for ship, length in ships.items():
+            rotation = 0
+            ship_tiles = []
+
             for i in range(2, length + 2):
-                grid = mark_tile((4,i), grid, 'ship')
+                grid = mark_tile((i,4), grid, 'ship')
+                ship_tiles.append((i, 4))
             
-            grid = format_table(grid)
-            print(grid)
-            ##print('\n'.join(['   '.join([str(cell) for cell in row]) for row in grid]))
+            formatted_grid = format_table(grid)
+            print(formatted_grid)
+            formatted_grid = None
             
             while True:
                 move = input()
-                time.sleep(0.2)
+
+                if move == "r":
+                    if rotation == 0:
+                        rotation = 1
+                        midship = ship_tiles[int(length / 2)]
+
+                        for tile in ship_tiles:
+                            grid = mark_tile(tile, grid, 'sea')
+
+                        new_ship_tiles = []
+                        for i in range(length):
+                            new_tile = (midship[1], midship[0] + (i - 1))
+                            new_ship_tiles.append(new_tile)
+                            
+                        for tile in new_ship_tiles:
+                            grid = mark_tile(tile, grid, 'ship')
+
+                        print(format_table(grid))
+                    else:
+                        pass
+
+
 
 empty_grid = initiate_empty_grid()
 place_ships_manually(empty_grid)
