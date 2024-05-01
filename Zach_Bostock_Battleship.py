@@ -22,6 +22,61 @@ import random
 import copy
 import os
 
+
+def initiate_empty_grid():
+    grid = []
+    for i in range(8):
+        grid.append([])
+        for j in range(8):
+            grid[i].append("#")
+
+    return grid
+
+def main():
+    ai_grid = auto_place_ships(initiate_empty_grid())
+    player_grid = manual_place_ships(initiate_empty_grid())
+
+def get_tile(request):
+    tiles = {'ship':'S'}
+    return tiles[request]
+    
+def auto_place_ships(board):
+    ship_types = {'aircraft carrier':5, 'destroyer':3, 'submarine':2, 'patrol boat':1}
+
+    for ship, length in ship_types.items():
+        new_ship_coords = create_ship_coords(board, length)
+        for coord in new_ship_coords:
+            board[coord[0]][coord[1]] = get_tile('ship')
+
+    print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
+
+def check_coord_valididity(coords, board):
+    for coord in coords:
+        if board[coord[0]][coord[1]] == get_tile('ship'):
+            return False
+    return True
+
+def create_ship_coords(board, length):
+    while True:
+        coords = []
+        rotated = False
+        if random.randint(0, 2) == 1:
+            coll = random.randint(0, 7  - length) #horizontal
+            row = random.randint(0, 7) #vertical
+        else:
+            rotated = True
+            coll = random.randint(0, 7) #horizontal
+            row = random.randint(0, 7 - length) #vertical
+
+        for i in range(length):
+            if rotated == False:
+                coords.append([coll + i, row])
+            else:
+                coords.append([coll, row + i])
+        if check_coord_valididity(coords, board) == True:
+            return coords
+
+
 def get_input(board=None):
     while True:
         adress = input("Enter Collumn and Row (Horizontal, Vertical):")
@@ -39,20 +94,42 @@ def get_input(board=None):
             if board != None:
                 print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
 
+def move_ship(ship, board, direction):
+    if direction.upper() == "W":
+        for i in range(len(ship)):
+            ship[i][0] -= 1
 
-def manual_place_ships(grid):
-    ship_classes = []
-    ship_stats = []
+        try:
+            check_coord_valididity(ship, board)
+            for coord in ship:
+                board[coord[0]][coord[1]] = get_tile('ship')
+            for coord in ship:
+                board[coord[0]][coord[1]] = get_tile('ship')
+        except:
+            print("Error!")
+
+    return board
+
+def manual_place_ships(board):
+    ship_types = {'aircraft carrier':5, 'destroyer':3, 'submarine':2, 'patrol boat':1}
     
-    for i in range(1, 6):
-        print('\n'.join(['   '.join([str(cell) for cell in row]) for row in grid]))
-        print(f"\nEnter where would you like to place your ship ({i}/5):")
+    i = 0
+    for ship, length in ship_types.items():
+        ship = []
+        i += 1
+        print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
                 
-        row, coll = get_input(board=grid)
-        
-        grid[row][coll] = "S"
+        new_ship_coords = create_ship_coords(board, length)
+        for coord in new_ship_coords:
+            board[coord[0]][coord[1]] = get_tile('ship')
+            ship.append(coord)
 
-    return grid
+        print('Use WASD to manuver your ship!')
+
+        direction = input("Enter Direction: ")
+        board = move_ship(ship, board, direction)
+
+    return board
 
 def check_game_status(grid):
     #takes -- grid- a 2d array containg the tiles and their status as occupied or unoccupied
@@ -63,3 +140,5 @@ def check_game_status(grid):
             if grid[i][j] == 1:
                 return "Running"
     return "Over"
+
+main()
