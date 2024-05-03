@@ -37,22 +37,20 @@ def main():
     player_grid = manual_place_ships(initiate_empty_grid())
 
 def get_tile(request):
-    tiles = {'ship':'S'}
+    tiles = {'ship':'S', 'sea':'#'}
     return tiles[request]
     
 def auto_place_ships(board):
     ship_types = {'aircraft carrier':5, 'destroyer':3, 'submarine':2, 'patrol boat':1}
 
     for ship, length in ship_types.items():
-        new_ship_coords = create_ship_coords(board, length)
+        new_ship_coords = create_ship_coords(board, length)[0]
         for coord in new_ship_coords:
             board[coord[0]][coord[1]] = get_tile('ship')
 
-    print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
-
-def check_coord_valididity(coords, board):
+def check_coord_valididity(coords, board, eraser_key = None):
     for coord in coords:
-        if board[coord[0]][coord[1]] == get_tile('ship'):
+        if eraser_key != None and coord not in eraser_key and board[coord[0]][coord[1]] == get_tile('ship'):
             return False
     return True
 
@@ -70,11 +68,11 @@ def create_ship_coords(board, length):
 
         for i in range(length):
             if rotated == False:
-                coords.append([coll + i, row])
+                coords.append([row, coll + i])
             else:
-                coords.append([coll, row + i])
+                coords.append([row + i, coll])
         if check_coord_valididity(coords, board) == True:
-            return coords
+            return coords, rotated
 
 
 def get_input(board=None):
@@ -92,21 +90,40 @@ def get_input(board=None):
             print("\nInput error, try again...\n")
 
             if board != None:
-                print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
+                pass
+                #print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
 
-def move_ship(ship, board, direction):
+def move_ship(ship, board, direction, rotated):
+    eraser_key = []
+    for i in range(len(ship)):
+        eraser_key.append([ship[i][0], ship[i][1]])
+        
     if direction.upper() == "W":
         for i in range(len(ship)):
             ship[i][0] -= 1
+                
+    elif direction.upper() == "S":
+        for i in range(len(ship)):
+            ship[i][0] += 1
+            
+    elif direction.upper() == "D":
+        for i in range(len(ship)):
+            ship[i][1] += 1
+            
+    elif direction.upper() == "A":
+        for i in range(len(ship)):
+            ship[i][1] -= 1
 
-        try:
-            check_coord_valididity(ship, board)
-            for coord in ship:
-                board[coord[0]][coord[1]] = get_tile('ship')
-            for coord in ship:
-                board[coord[0]][coord[1]] = get_tile('ship')
-        except:
-            print("Error!")
+    print(ship)
+    try:
+        if check_coord_valididity(ship, board, eraser_key) == True:
+            for coord in eraser_key:
+                board[coord[0]][coord[1]] = get_tile('sea')
+            for coordinate in ship:
+                board[coordinate[0]][coordinate[1]] = get_tile('ship')#switch this
+
+    except:
+        print("Error!")
 
     return board
 
@@ -117,17 +134,23 @@ def manual_place_ships(board):
     for ship, length in ship_types.items():
         ship = []
         i += 1
-        print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
                 
-        new_ship_coords = create_ship_coords(board, length)
+        new_ship_coords, rotated = create_ship_coords(board, length)
         for coord in new_ship_coords:
             board[coord[0]][coord[1]] = get_tile('ship')
             ship.append(coord)
 
         print('Use WASD to manuver your ship!')
+        print('Input (P) to place')
 
-        direction = input("Enter Direction: ")
-        board = move_ship(ship, board, direction)
+        while True:
+            print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
+
+            direction = input("Enter Input: ")
+            if direction.upper() == "P":
+                break
+            print(ship)
+            board = move_ship(ship, board, direction, rotated)
 
     return board
 
