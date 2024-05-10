@@ -25,6 +25,16 @@ import os
 os.system('cls')
 
 
+def color_board(board):
+    conversion_dict = {'X':'X'}
+    pass
+
+
+def game_loop(player_grid, computer_grid):
+    while True:
+        pass
+    
+
 def initiate_empty_grid():
     grid = []
     for i in range(8):
@@ -37,6 +47,8 @@ def initiate_empty_grid():
 def main():
     ai_grid = auto_place_ships(initiate_empty_grid())
     player_grid = manual_place_ships(initiate_empty_grid())
+    
+    result = game_loop(ai_grid, player_grid)
 
 def get_tile(request):
     tiles = {'ship':'S', 'sea':'#'}
