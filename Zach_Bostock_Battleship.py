@@ -22,6 +22,8 @@ import random
 import copy
 import os
 
+os.system('cls')
+
 
 def initiate_empty_grid():
     grid = []
@@ -49,6 +51,9 @@ def auto_place_ships(board):
             board[coord[0]][coord[1]] = get_tile('ship')
 
 def check_coord_valididity(coords, board, eraser_key = None):
+    for coord in coords:
+        if not ((-1 < coord[0] < 8) and (-1 < coord[1] < 8)):
+            return False
     for coord in coords:
         if eraser_key != None and coord not in eraser_key and board[coord[0]][coord[1]] == get_tile('ship'):
             return False
@@ -81,7 +86,7 @@ def get_input(board=None):
             
         try:
             coll, row = [int(integer) for integer in adress.split(",")]
-            if (coll != None and row != None) and 0 < coll <= 8 and 0 < row <= 8:
+            if (coll != None and row != None) and 0 < coll < 8 and 0 < row <= 8:
                 return row - 1, coll - 1
             else: 
                 raise()
@@ -114,18 +119,16 @@ def move_ship(ship, board, direction, rotated):
         for i in range(len(ship)):
             ship[i][1] -= 1
 
-    print(ship)
-    try:
-        if check_coord_valididity(ship, board, eraser_key) == True:
-            for coord in eraser_key:
-                board[coord[0]][coord[1]] = get_tile('sea')
-            for coordinate in ship:
-                board[coordinate[0]][coordinate[1]] = get_tile('ship')#switch this
 
-    except:
-        print("Error!")
+    if check_coord_valididity(ship, board, eraser_key) == True:
+        for coord in eraser_key:
+            board[coord[0]][coord[1]] = get_tile('sea')
+        for coordinate in ship:
+            board[coordinate[0]][coordinate[1]] = get_tile('ship')#switch this
+    else:
+        ship = eraser_key
 
-    return board
+    return board, ship
 
 def manual_place_ships(board):
     ship_types = {'aircraft carrier':5, 'destroyer':3, 'submarine':2, 'patrol boat':1}
@@ -140,17 +143,18 @@ def manual_place_ships(board):
             board[coord[0]][coord[1]] = get_tile('ship')
             ship.append(coord)
 
-        print('Use WASD to manuver your ship!')
-        print('Input (P) to place')
+
 
         while True:
+            print('Use WASD to manuver your ship!')
+            print(f'Input (P) to place ({i}/5)\n')
             print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
 
             direction = input("Enter Input: ")
+            os.system('cls')
             if direction.upper() == "P":
                 break
-            print(ship)
-            board = move_ship(ship, board, direction, rotated)
+            board, ship = move_ship(ship, board, direction, rotated)
 
     return board
 
