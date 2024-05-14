@@ -24,17 +24,67 @@ import os
 
 os.system('cls')
 
-
 def color_board(board):
-    conversion_dict = {'X':'X'}
+    conversion_dict = {'S':'H', '#':'#'}
     pass
 
+def generate_radar(board):
+    conversion_dict = {'S':'#', '#':'#', 'X':'H', 'M':'M'}
 
+    radar = []
+    for i in range(len(board)):
+        radar.append([])
+        for j in range(len(board)):
+            radar[i].insert(j, conversion_dict[board[i][j]])
+    
+    return radar
+
+def computer_move(player_grid):
+    while True:
+        row, coll = random.randint(0, 7), random.randint(0, 7)
+        print(player_grid[coll][row])
+        if player_grid[coll][row] == 'S':
+            player_grid[coll][row] = 'X'
+            return player_grid
+        elif player_grid[coll][row] == '#':
+            player_grid[coll][row] = 'M'
+            return player_grid
+        
 def game_loop(player_grid, computer_grid):
     while True:
-        pass
+        computer_grid = player_move(player_grid, computer_grid)
+        if check_game_status(computer_grid) == "Over":
+            print("Game Over, you win!")
+        player_grid = computer_move(player_grid)
+        if check_game_status(player_grid) == "Over":
+            print("Game Over, you lost!")
     
+def player_move(player_grid, computer_grid):
+    conversion_dict = {'S':'X', '#':'M'}
 
+    radar = generate_radar(computer_grid)
+    os.system('cls')
+
+    while True:
+        print("Admiral, its time to engage the enemy fleet! \nMake a move!\n\nHere is our most updated Radar!\n")
+        print('\n'.join(['   '.join([str(cell) for cell in row]) for row in radar]))
+        print('\nHere is your grid!\n')
+        print('\n'.join(['   '.join([str(cell) for cell in row]) for row in player_grid]))
+        
+        coll, row = get_input([radar, player_grid])
+        
+        os.system('cls')
+        
+        try:
+            computer_grid[coll][row] = conversion_dict[computer_grid[coll][row]]
+            return computer_grid
+
+        except:
+            if KeyError:
+                print("Tile already guessed!")
+        else:
+            radar = generate_radar(computer_grid)
+    
 def initiate_empty_grid():
     grid = []
     for i in range(8):
@@ -48,7 +98,7 @@ def main():
     ai_grid = auto_place_ships(initiate_empty_grid())
     player_grid = manual_place_ships(initiate_empty_grid())
     
-    result = game_loop(ai_grid, player_grid)
+    result = game_loop(player_grid, ai_grid)
 
 def get_tile(request):
     tiles = {'ship':'S', 'sea':'#'}
@@ -61,7 +111,8 @@ def auto_place_ships(board):
         new_ship_coords = create_ship_coords(board, length)[0]
         for coord in new_ship_coords:
             board[coord[0]][coord[1]] = get_tile('ship')
-
+    return board
+    
 def check_coord_valididity(coords, board, eraser_key = None):
     for coord in coords:
         if not ((-1 < coord[0] < 8) and (-1 < coord[1] < 8)):
@@ -92,13 +143,13 @@ def create_ship_coords(board, length):
             return coords, rotated
 
 
-def get_input(board=None):
+def get_input(boards=None):
     while True:
         adress = input("Enter Collumn and Row (Horizontal, Vertical):")
             
         try:
             coll, row = [int(integer) for integer in adress.split(",")]
-            if (coll != None and row != None) and 0 < coll < 8 and 0 < row <= 8:
+            if (coll != None and row != None) and 0 < coll <= 8 and 0 < row <= 8:
                 return row - 1, coll - 1
             else: 
                 raise()
@@ -106,9 +157,11 @@ def get_input(board=None):
             os.system('cls')
             print("\nInput error, try again...\n")
 
-            if board != None:
-                pass
-                #print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
+            if boards != None:
+                print("Admiral, its time to engage the enemy fleet! \nMake a move!\n\nHere is our most updated Radar!\n")
+                print('\n'.join(['   '.join([str(cell) for cell in row]) for row in boards[0]]))
+                print('\nHere is your grid!\n')
+                print('\n'.join(['   '.join([str(cell) for cell in row]) for row in boards[1]]))
 
 def move_ship(ship, board, direction, rotated):
     eraser_key = []
@@ -155,11 +208,9 @@ def manual_place_ships(board):
             board[coord[0]][coord[1]] = get_tile('ship')
             ship.append(coord)
 
-
-
         while True:
             print('Use WASD to manuver your ship!')
-            print(f'Input (P) to place ({i}/5)\n')
+            print(f'Input (P) to place ({i}/4)\n')
             print('\n'.join(['   '.join([str(cell) for cell in row]) for row in board]))
 
             direction = input("Enter Input: ")
@@ -176,7 +227,7 @@ def check_game_status(grid):
     #returns -- "running" if there are alive ships on the board, returns "Over" if there are no more alive ships on the board
     for i in range(8):
         for j in range(8):
-            if grid[i][j] == 1:
+            if grid[i][j] == 'S':
                 return "Running"
     return "Over"
 
