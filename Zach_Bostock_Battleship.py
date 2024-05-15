@@ -53,11 +53,14 @@ def computer_move(player_grid):
 def game_loop(player_grid, computer_grid):
     while True:
         computer_grid = player_move(player_grid, computer_grid)
-        if check_game_status(computer_grid) == "Over":
+        
+        if check_game_status(computer_grid):
             print("Game Over, you win!")
+            return
         player_grid = computer_move(player_grid)
-        if check_game_status(player_grid) == "Over":
+        if check_game_status(player_grid):
             print("Game Over, you lost!")
+            return
     
 def player_move(player_grid, computer_grid):
     conversion_dict = {'S':'X', '#':'M'}
@@ -96,6 +99,7 @@ def initiate_empty_grid():
 
 def main():
     ai_grid = auto_place_ships(initiate_empty_grid())
+    
     player_grid = manual_place_ships(initiate_empty_grid())
     
     result = game_loop(player_grid, ai_grid)
@@ -225,10 +229,11 @@ def check_game_status(grid):
     #takes -- grid- a 2d array containg the tiles and their status as occupied or unoccupied
     #does -- iterates over the grid using nested for loops to determine if their are any occupied squares on the board
     #returns -- "running" if there are alive ships on the board, returns "Over" if there are no more alive ships on the board
-    for i in range(8):
-        for j in range(8):
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
             if grid[i][j] == 'S':
-                return "Running"
-    return "Over"
+                print(i, j)
+                return False
+    return True
 
 main()
