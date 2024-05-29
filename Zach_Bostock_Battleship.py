@@ -1,4 +1,10 @@
 """
+## Author - Zachry Bostock
+## Date Completed - 12/16/23
+## Implemented Project Componenets (as listed on course website) - ALL
+## Bugs - N/A
+## Bonus - 1
+
 --algo--
 
 main()
@@ -19,16 +25,14 @@ main()
 """
 
 import random
-import copy
 import os
 
 os.system('cls')
 
-def color_board(board):
-    conversion_dict = {'S':'H', '#':'#'}
-    pass
-
 def generate_radar(board):
+    #takes -- board: the AI_board that is used to generate the player radar
+    #processes -- the radar to show the player based on the board arg
+    #returns -- radar: the player's radar
     conversion_dict = {'S':'#', '#':'#', 'X':'H', 'M':'M'}
 
     radar = []
@@ -40,6 +44,9 @@ def generate_radar(board):
     return radar
 
 def computer_move(player_grid):
+    #takes -- player_grid: the grid of the player
+    #processes -- handles the computer guessing and updating of player_grid accordingly
+    #returns -- player_grid: the player's new grid
     while True:
         row, coll = random.randint(0, 7), random.randint(0, 7)
         print(player_grid[coll][row])
@@ -51,6 +58,9 @@ def computer_move(player_grid):
             return player_grid
         
 def game_loop(player_grid, computer_grid):
+    #takes -- player_grid: the grid of the player, computer_grid: the grid of thed computer
+    #processes -- the main game logic after the ships have been placed
+    #returns -- NONE
     while True:
         computer_grid = player_move(player_grid, computer_grid)
         
@@ -63,6 +73,9 @@ def game_loop(player_grid, computer_grid):
             return
     
 def player_move(player_grid, computer_grid):
+    #takes -- player_grid: the grid of the player, computer_grid: the grid of the computer
+    #processes -- handles logic for player guessing, including both printing the player's radar and board and collecting and validating input
+    #returns -- computer_grid: the computer's grid updated following the player's guess
     conversion_dict = {'S':'X', '#':'M'}
 
     radar = generate_radar(computer_grid)
@@ -85,10 +98,11 @@ def player_move(player_grid, computer_grid):
         except:
             if KeyError:
                 print("Tile already guessed!")
-        else:
-            radar = generate_radar(computer_grid)
     
 def initiate_empty_grid():
+    #takes -- NONE
+    #processes -- initiates and appends to a 2d array using for loop iteration to create an 8x8 grid
+    #returns -- grid: an empty 8x8 2d array
     grid = []
     for i in range(8):
         grid.append([])
@@ -98,17 +112,27 @@ def initiate_empty_grid():
     return grid
 
 def main():
+    #takes -- NONE
+    #processes -- logic for setting up boards
+    #returns -- NONE
     ai_grid = auto_place_ships(initiate_empty_grid())
     
     player_grid = manual_place_ships(initiate_empty_grid())
     
-    result = game_loop(player_grid, ai_grid)
+    game_loop(player_grid, ai_grid)
 
 def get_tile(request):
+    #purpose -- to allow for easier customization of symbols. Provides high level accessibility, making it easier to modify graphics
+    #takes -- request: the requested tile type
+    #processes -- matches the tile request string to a symbol
+    #returns -- returns the requested symbol
     tiles = {'ship':'S', 'sea':'#'}
     return tiles[request]
     
 def auto_place_ships(board):
+    #takes -- board: an empty 8x8 2d array
+    #processes -- fetches coordinates for ships from the create_ship_coords() function to place onto board randomly. Ensures valid ship placement.
+    #returns -- board: an 8x8 2d array populated with ships
     ship_types = {'aircraft carrier':5, 'destroyer':3, 'submarine':2, 'patrol boat':1}
 
     for ship, length in ship_types.items():
@@ -118,6 +142,10 @@ def auto_place_ships(board):
     return board
     
 def check_coord_valididity(coords, board, eraser_key = None):
+    #takes -- coords: a tuple representing the comprised of the collumn and row of a position respectively. Board: the 8x8 2d array to check the coord validity against. 
+        #eraser_key: a list containing tiles that would be erased given the other coords not in eraser_key are valid (function ignores these coords in calculation)
+    #processes -- checks the validity of the coord entered given the board and eraser key args
+    #returns -- a boolean representing whether the cords are valid (true) or invalid (false)
     for coord in coords:
         if not ((-1 < coord[0] < 8) and (-1 < coord[1] < 8)):
             return False
@@ -127,6 +155,9 @@ def check_coord_valididity(coords, board, eraser_key = None):
     return True
 
 def create_ship_coords(board, length):
+    #takes -- board: an 8x8 2d array. length: the length of the board
+    #processes -- creates a set of coordiantes, either vertical or horizontal, represented by a list
+    #returns -- coords: the set of coords represented as a list. rotated: the status of the ships rotation
     while True:
         coords = []
         rotated = False
@@ -148,6 +179,9 @@ def create_ship_coords(board, length):
 
 
 def get_input(boards=None):
+    #takes -- boards: a boolean variable defining whether or not boards have been setup yet
+    #processes -- uses a while loop to get a selected row, coll from a user. Ensures they are valid before proceeding with logic
+    #returns -- row-1: the valid row coordinate. coll-1: the valid collumn coordinate
     while True:
         adress = input("Enter Collumn and Row (Horizontal, Vertical):")
             
@@ -155,8 +189,7 @@ def get_input(boards=None):
             coll, row = [int(integer) for integer in adress.split(",")]
             if (coll != None and row != None) and 0 < coll <= 8 and 0 < row <= 8:
                 return row - 1, coll - 1
-            else: 
-                raise()
+            else: raise()
         except:
             os.system('cls')
             print("\nInput error, try again...\n")
@@ -168,6 +201,9 @@ def get_input(boards=None):
                 print('\n'.join(['   '.join([str(cell) for cell in row]) for row in boards[1]]))
 
 def move_ship(ship, board, direction, rotated):
+    #takes -- ship: a list representing the coordinates of the ship being moved. board: an 8x8 2d array. direction: the direction the user should move, a string representing a WASD key
+    #processes -- the direction the user would like to move in, and proceeds to execute logic to move the ship while ensuring the new position is valid
+    #returns -- board: the board with the updated ship position. ship: the new coordinates of the ship on the board
     eraser_key = []
     for i in range(len(ship)):
         eraser_key.append([ship[i][0], ship[i][1]])
@@ -200,6 +236,9 @@ def move_ship(ship, board, direction, rotated):
     return board, ship
 
 def manual_place_ships(board):
+    #takes -- board: an 8x8 2d array
+    #processes -- allows the user to use the WASD keys to manuver 1 of each shiptype found in the ship_types dictionary
+    #returns -- board: the original 8x8 2d array populated with four ships, one of each class
     ship_types = {'aircraft carrier':5, 'destroyer':3, 'submarine':2, 'patrol boat':1}
     
     i = 0
