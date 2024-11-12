@@ -25,7 +25,13 @@ class MatrixMaster:
             for j in range(self.cols):
                 print(self.data[i][j], end="")
             print()
-        
+    
+    def scalarTimesRow(self, scalar, rownumber):
+        if 0 <= rownumber <= self.rows:
+            for i in range(self.cols):
+                self.data[rownumber][i] = self.data[rownumber][i] * scalar
+
+
 
         
         
