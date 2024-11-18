@@ -31,7 +31,12 @@ class MatrixMaster:
             for i in range(self.cols):
                 self.data[rownumber][i] = self.data[rownumber][i] * scalar
 
+    def switchRows(self, firstRow, secondRow):
+        self.data[firstRow], self.data[secondRow] = self.data[secondRow], self.data[firstRow]
 
-
-        
-        
+    def linearCombRows(self, scalar, firstRow, secondRow):
+        if 0 <= firstRow < self.rows and 0 <= secondRow < self.rows:
+            for i in range(self.cols):
+                self.data[firstRow][i] = scalar * self.data[firstRow][i] + self.data[secondRow][i]
+        else:
+            raise IndexError("Row number out of range!")
