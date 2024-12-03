@@ -1,5 +1,6 @@
 class MatrixMaster:
     def __init__(self, rows, cols):
+        # create class instance with set rows and cols
         self.cols = cols
         self.rows = rows
         self.data = [[0 for _ in range(cols)] for _ in range(rows)]
@@ -52,12 +53,13 @@ class MatrixMaster:
             raise IndexError("Row numbers are not within the valid range!")
     
     def rowreduce(self):
-        n = min(self.rows, self.cols) # initialize the 'n' variable as the smaller dimension to avoid index errors
-        
+       
+        n = self.rows # initialize the 'n' variable as the dimension of the array
+            
         for i in range(n):
             # find the 'pivot' or the diagonol entry in each row
             pivot_row = None # initialize the 'pivot_row' variable as None
-            for row in range(i, self.rows): 
+            for row in range(i, n): 
                 if self.data[row][i] != 0: # check if the pivot of the row is not zero
                     pivot_row = row
                     break
@@ -69,18 +71,12 @@ class MatrixMaster:
                 self.switchRows(i, pivot_row) # Swap the current row with the pivot row
 
             pivot = self.data[i][i] # set the new pivot
-            if pivot != 0:
-                self.scalarTimesRow(1 / pivot, i) # normalize the pivot to allow for elimination
 
             # go through the rows below the pivot and eliminate values from the pivot's column index
-            for row in range(i + 1, self.rows):
+            for row in range(i + 1, n):
                 factor = self.data[row][i]
                 if factor != 0:
-                    self.linearCombRows(-factor, i, row)
-
-        # print the result
-        print("Row Echelon Form (REF):")
-        self.print_matrix()
+                    self.linearCombRows(-factor/pivot, i, row)
 
     def invert(self):
         if self.rows != self.cols:
@@ -123,24 +119,24 @@ class MatrixMaster:
         return inverse_matrix
 
     def rref(self):
-            self.rowreduce()
+        # use the row reduce function to allow for back substitution
+        self.rowreduce()
 
-            n = min(self.rows, self.cols)
+        n = min(self.rows, self.cols)
 
-            for i in range(n - 1, -1, -1):
-                pivot_col = None
-                for j in range(self.cols):
-                    if self.data[i][j] == 1:
-                        pivot_col = j
-                        break
+        # iterate over the array from bottom right to top left & find pivot column
+        for i in range(n - 1, -1, -1):
+            pivot_col = None
+            for j in range(self.cols):
+                if self.data[i][j] == 1:
+                    pivot_col = j
+                    break
 
-                if pivot_col is None:
-                    continue
-
-                for row in range(i):
-                    factor = self.data[row][pivot_col]
-                    if factor != 0:
-                        self.linearCombRows(-factor, i, row)
-
-            print("Reduced Row Echelon Form (RREF):")
-            self.print_matrix()
+            if pivot_col is None:
+                continue
+            
+            # use linearCombRows function to eliminate non pivot elements of the array
+            for row in range(i):
+                factor = self.data[row][pivot_col]
+                if factor != 0:
+                    self.linearCombRows(-factor, i, row)
