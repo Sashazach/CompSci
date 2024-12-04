@@ -52,8 +52,7 @@ class MatrixMaster:
         else:
             raise IndexError("Row numbers are not within the valid range!")
     
-    def rowreduce(self):
-       
+    def rowReduceHelper(self):
         n = self.rows # initialize the 'n' variable as the dimension of the array
             
         for i in range(n):
@@ -71,12 +70,14 @@ class MatrixMaster:
                 self.switchRows(i, pivot_row) # Swap the current row with the pivot row
 
             pivot = self.data[i][i] # set the new pivot
+            if pivot != 0:
+                self.scalarTimesRow(1 / pivot, i) # normalize the pivot to allow for elimination
 
             # go through the rows below the pivot and eliminate values from the pivot's column index
             for row in range(i + 1, n):
                 factor = self.data[row][i]
                 if factor != 0:
-                    self.linearCombRows(-factor/pivot, i, row)
+                    self.linearCombRows(-factor, i, row)
 
     def invert(self):
         if self.rows != self.cols:
@@ -118,9 +119,9 @@ class MatrixMaster:
 
         return inverse_matrix
 
-    def rref(self):
+    def rowReduce(self):
         # use the row reduce function to allow for back substitution
-        self.rowreduce()
+        self.rowReduceHelper()
 
         n = min(self.rows, self.cols)
 
