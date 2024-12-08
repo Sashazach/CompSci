@@ -1,3 +1,7 @@
+# Author - Zach Bostock
+# Created Novemeber 2024
+# Included project components - all required functions + REF
+
 class MatrixMaster:
     def __init__(self, rows, cols):
         # create class instance with set rows and cols
@@ -53,31 +57,28 @@ class MatrixMaster:
             raise IndexError("Row numbers are not within the valid range!")
     
     def rowReduceHelper(self):
-        n = self.rows # initialize the 'n' variable as the dimension of the array
-            
+        # convert to row echelon form (REF)
+        n = self.rows
+                
         for i in range(n):
-            # find the 'pivot' or the diagonol entry in each row
-            pivot_row = None # initialize the 'pivot_row' variable as None
-            for row in range(i, n): 
-                if self.data[row][i] != 0: # check if the pivot of the row is not zero
+            # find pivot
+            pivot_row = None
+            for row in range(i, n):
+                if self.data[row][i] != 0:
                     pivot_row = row
                     break
 
             if pivot_row is None:
-                continue  # there is no pivot row for the i'th index (variable does not exist)
+                continue
 
             if pivot_row != i: 
-                self.switchRows(i, pivot_row) # Swap the current row with the pivot row
+                self.switchRows(i, pivot_row)
 
-            pivot = self.data[i][i] # set the new pivot
-            if pivot != 0:
-                self.scalarTimesRow(1 / pivot, i) # normalize the pivot to allow for elimination
-
-            # go through the rows below the pivot and eliminate values from the pivot's column index
+            # eliminate below pivot
             for row in range(i + 1, n):
                 factor = self.data[row][i]
                 if factor != 0:
-                    self.linearCombRows(-factor, i, row)
+                    self.linearCombRows(-factor / self.data[i][i], i, row)
 
     def invert(self):
         if self.rows != self.cols:
@@ -120,23 +121,29 @@ class MatrixMaster:
         return inverse_matrix
 
     def rowReduce(self):
-        # use the row reduce function to allow for back substitution
+        # Start by producing REF form
         self.rowReduceHelper()
 
         n = min(self.rows, self.cols)
 
-        # iterate over the array from bottom right to top left & find pivot column
+        # Convert REF to RREF by eliminating above pivots and ensuring pivots are 1
         for i in range(n - 1, -1, -1):
             pivot_col = None
+            # find first nonzero entry in row as pivot
             for j in range(self.cols):
-                if self.data[i][j] == 1:
+                if self.data[i][j] != 0:
                     pivot_col = j
                     break
 
             if pivot_col is None:
                 continue
-            
-            # use linearCombRows function to eliminate non pivot elements of the array
+
+            # normalize pivot to 1
+            pivot = self.data[i][pivot_col]
+            if pivot != 1:
+                self.scalarTimesRow(1 / pivot, i)
+
+            # eliminate above pivot
             for row in range(i):
                 factor = self.data[row][pivot_col]
                 if factor != 0:
