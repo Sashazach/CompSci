@@ -1,4 +1,5 @@
 # Author - Zach Bostock
+# Title - Matrix Assignment
 # Created Novemeber 2024
 # Included project components - all required functions + REF
 
@@ -56,9 +57,9 @@ class MatrixMaster:
         else:
             raise IndexError("Row numbers are not within the valid range!")
     
-    def rowReduceHelper(self):
+    def ref(self):
         # convert to row echelon form (REF)
-        n = self.rows
+        n = min(self.rows, self.cols)
                 
         for i in range(n):
             # find pivot
@@ -120,9 +121,17 @@ class MatrixMaster:
 
         return inverse_matrix
 
+    def transpose(self):
+        # return the transposed matrix
+        transposed = MatrixMaster(self.cols, self.rows)
+        for i in range(self.rows):
+            for j in range(self.cols):
+                transposed.data[j][i] = self.data[i][j]
+        return transposed
+
     def rowReduce(self):
         # Start by producing REF form
-        self.rowReduceHelper()
+        self.ref()
 
         n = min(self.rows, self.cols)
 
