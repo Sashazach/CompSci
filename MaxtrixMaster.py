@@ -3,26 +3,26 @@
 # Created Novemeber 2024
 # Included project components - all required functions + REF
 
-class MatrixMaster:
+class Matrix:
     def __init__(self, rows, cols):
         # create class instance with set rows and cols
         self.cols = cols
         self.rows = rows
         self.data = [[0 for _ in range(cols)] for _ in range(rows)]
 
-    def plus(self, matrix : 'MatrixMaster') -> 'MatrixMaster':
+    def plus(self, matrix : 'Matrix') -> 'Matrix':
         if matrix.rows != self.rows or matrix.cols != self.cols:
             raise ValueError("Cannot add: Matrices must have the same dimensions.")
-        newMatrix = MatrixMaster(self.rows, self.cols)
+        newMatrix = Matrix(self.rows, self.cols)
         for i in range(self.rows):
             for j in range(self.cols):
                 newMatrix.data[i][j] = self.data[i][j] + matrix.data[i][j]
         return newMatrix
             
-    def multiply(self, matrix : 'MatrixMaster') -> 'MatrixMaster':
+    def times(self, matrix : 'Matrix') -> 'Matrix':
         if self.cols != matrix.rows:
             raise ValueError("Cannot multiply: Incompatible matrix dimensions.")
-        newMatrix = MatrixMaster(self.rows, matrix.cols)
+        newMatrix = Matrix(self.rows, matrix.cols)
         for i in range(self.rows):
             for j in range(matrix.cols):
                 sum = 0
@@ -87,11 +87,11 @@ class MatrixMaster:
 
         n = self.rows
 
-        identity = MatrixMaster(n, n) # store an identity matrix with NxN dimensions in the 'identity' variable
+        identity = Matrix(n, n) # store an identity matrix with NxN dimensions in the 'identity' variable
         for i in range(n):
             identity.data[i][i] = 1.0 # initialize the diagonol values of the identity matrix to 1
 
-        augmented = MatrixMaster(n, n * 2) # create an augmented matrix with twice the number of collumns
+        augmented = Matrix(n, n * 2) # create an augmented matrix with twice the number of collumns
         for i in range(n): 
             augmented.data[i] = self.data[i] + identity.data[i] # concatenate the rows of the matrix and the identity matrix
 
@@ -115,7 +115,7 @@ class MatrixMaster:
                     augmented.linearCombRows(-factor, i, k)
 
         # take out the inverse matrix from the augmented matrix
-        inverse_matrix = MatrixMaster(n, n)
+        inverse_matrix = Matrix(n, n)
         for i in range(n):
             inverse_matrix.data[i] = augmented.data[i][n:]
 
@@ -123,13 +123,13 @@ class MatrixMaster:
 
     def transpose(self):
         # return the transposed matrix
-        transposed = MatrixMaster(self.cols, self.rows)
+        transposed = Matrix(self.cols, self.rows)
         for i in range(self.rows):
             for j in range(self.cols):
                 transposed.data[j][i] = self.data[i][j]
         return transposed
 
-    def rowReduce(self):
+    def rowreduce(self):
         # Start by producing REF form
         self.ref()
 
