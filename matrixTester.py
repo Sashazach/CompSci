@@ -1,18 +1,17 @@
 import MaxtrixMaster
 
-ralph = MaxtrixMaster.MatrixMaster(3, 4)
+ralph = MaxtrixMaster.Matrix(3,1)
 ralph.data = [
-    [3, 4, 5, 3],
-    [5, 2, 1, 0],
-    [4, 4, 4, 5]
+    [2],
+    [4],
+    [3],
 ]
 
-trixie = MaxtrixMaster.MatrixMaster(3, 4)
-trixie.data = [
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 1, 1, 1],
+romeo = MaxtrixMaster.Matrix(2,3)
+romeo.data = [
+    [3, 4, 5],
+    [6, 7, 8],
 ]
 
-ralph.rowReduce()
-ralph.print_matrix()
+mult = romeo.times(ralph)
+mult.print_matrix()

@@ -1,8 +1,3 @@
-# Author - Zach Bostock
-# Title - Matrix Assignment
-# Created Novemeber 2024
-# Included project components - all required functions + REF
-
 class Matrix:
     def __init__(self, rows, cols):
         # create class instance with set rows and cols
@@ -64,7 +59,7 @@ class Matrix:
         for i in range(n):
             # find pivot
             pivot_row = None
-            for row in range(i, n):
+            for row in range(i, self.rows):
                 if self.data[row][i] != 0:
                     pivot_row = row
                     break
@@ -76,7 +71,7 @@ class Matrix:
                 self.switchRows(i, pivot_row)
 
             # eliminate below pivot
-            for row in range(i + 1, n):
+            for row in range(i + 1, self.rows):
                 factor = self.data[row][i]
                 if factor != 0:
                     self.linearCombRows(-factor / self.data[i][i], i, row)
@@ -130,12 +125,12 @@ class Matrix:
         return transposed
 
     def rowreduce(self):
-        # Start by producing REF form
+        # start by producing REF form
         self.ref()
 
         n = min(self.rows, self.cols)
 
-        # Convert REF to RREF by eliminating above pivots and ensuring pivots are 1
+        # convert REF to RREF by eliminating above pivots and ensuring pivots are 1
         for i in range(n - 1, -1, -1):
             pivot_col = None
             # find first nonzero entry in row as pivot
