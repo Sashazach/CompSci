@@ -40,12 +40,9 @@ class ball:
     def getColor(self):
         return self.color
 
-    # Generates a random step in the movement of the ball
-    # The step has a higher chances of going to the center so the ball does not leave the frame of the animation or graph
     def step(self, minVelo=5, maxVelo=100):
         deltaPosition = self.Ys[-1] - self.initialPosition
 
-        # Corrected acceleration using Hooke's law (negative sign)
         acceleration = -self.springConstant * deltaPosition / self.mass
         self.initialVelocity += acceleration * self.deltaTime
 
